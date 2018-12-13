@@ -1,0 +1,42 @@
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: app2a
+  labels:
+    app: app2
+    ver: a
+spec:
+  replicas: 1
+  selector:
+    app: app2
+    ver: a
+  template:
+    metadata:
+      labels:
+        app: app2
+        ver: a
+    spec:
+      containers:
+      - name: app2a
+        image: app2a:latest
+        imagePullPolicy: Never
+        ports:
+        - name: http-server
+          containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2
+  labels:
+    app: app2
+    ver: a
+spec:
+  selector:
+    app: app2
+    ver: a
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: http-server
